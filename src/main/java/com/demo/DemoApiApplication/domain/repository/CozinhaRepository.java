@@ -11,5 +11,4 @@ public interface CozinhaRepository {
     Cozinha salvar(Cozinha cozinha);
     void remover(Cozinha cozinha);
 
-
 }

@@ -37,5 +37,4 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
         cozinha = buscar(cozinha.getId());
         manager.remove(cozinha);
     }
-
 }
