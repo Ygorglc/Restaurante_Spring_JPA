@@ -1,6 +1,8 @@
 package com.demo.DemoApiApplication.api.controller;
 
 import com.demo.DemoApiApplication.api.model.CozinhasXmlWrapper;
+import com.demo.DemoApiApplication.domain.exception.EntidadeEmUsoException;
+import com.demo.DemoApiApplication.domain.exception.EntidadeNaoEncontradaException;
 import com.demo.DemoApiApplication.domain.model.Cozinha;
 import com.demo.DemoApiApplication.domain.repository.CozinhaRepository;
 import com.demo.DemoApiApplication.domain.service.CadastroCozinhaService;
@@ -64,7 +66,7 @@ public class CozinhaController {
         if(cozinhaAtual != null){
             BeanUtils.copyProperties(cozinha,cozinhaAtual, "id");
 
-            cozinhaRepository.salvar(cozinhaAtual);
+            cadastroCozinha.salvar(cozinhaAtual);
             return ResponseEntity.ok(cozinhaAtual);
         }
         return ResponseEntity.notFound().build();
@@ -75,11 +77,13 @@ public class CozinhaController {
         Cozinha cozinha = cozinhaRepository.buscar(id);
         try {
             if (cozinha != null) {
-                cozinhaRepository.remover(cozinha);
-                return ResponseEntity.notFound().build();
+                cadastroCozinha.excluir(id);
+                return ResponseEntity.noContent().build();
             }
             return ResponseEntity.noContent().build();
-        } catch (DataIntegrityViolationException e){
+        }catch (EntidadeNaoEncontradaException e){
+            return ResponseEntity.notFound().build();
+        }catch(EntidadeEmUsoException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).build() ;
         }
     }
