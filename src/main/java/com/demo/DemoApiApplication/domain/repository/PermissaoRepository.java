@@ -11,5 +11,4 @@ public interface PermissaoRepository {
     Permissao salvar(Permissao permissao);
     void remover(Permissao permissao);
 
-
 }
