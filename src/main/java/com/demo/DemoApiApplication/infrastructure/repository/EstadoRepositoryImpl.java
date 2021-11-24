@@ -2,6 +2,7 @@ package com.demo.DemoApiApplication.infrastructure.repository;
 
 import com.demo.DemoApiApplication.domain.model.Estado;
 import com.demo.DemoApiApplication.domain.repository.EstadoRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
-
 public class EstadoRepositoryImpl implements EstadoRepository {
 
     @PersistenceContext
@@ -34,8 +34,12 @@ public class EstadoRepositoryImpl implements EstadoRepository {
 
     @Transactional
     @Override
-    public void remover(Estado estado){
-        estado = buscar(estado.getId());
+    public void remover(Long id){
+        Estado estado = buscar(id);
+
+        if(estado == null){
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(estado);
     }
 }

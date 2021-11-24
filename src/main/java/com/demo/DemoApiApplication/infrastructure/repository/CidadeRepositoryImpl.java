@@ -2,6 +2,7 @@ package com.demo.DemoApiApplication.infrastructure.repository;
 
 import com.demo.DemoApiApplication.domain.model.Cidade;
 import com.demo.DemoApiApplication.domain.repository.CidadeRespository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +35,13 @@ public class CidadeRepositoryImpl implements CidadeRespository {
 
     @Transactional
     @Override
-    public void remover(Cidade cidade){
-        cidade = buscar(cidade.getId());
+    public void remover(Long id){
+        Cidade cidade = buscar(id);
+
+        if(cidade == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+
         manager.remove(cidade);
     }
-
-
 }
